@@ -22,6 +22,7 @@ jobs:
         run: |
           tar -czf panel.tar.gz \
             --exclude='.git' \
+            --exclude='panel.tar.gz' \
             --exclude='node_modules' \
             --exclude='.env' \
             --exclude='storage/logs/*' \
