@@ -1,9 +1,11 @@
-name: Build & Release JPCraft Panel
+# Este workflow fue reemplazado por release.yaml (el workflow principal corregido).
+# Está deshabilitado para evitar ejecuciones duplicadas.
+# Si necesitas reactivarlo, cambia el trigger a un branch/evento diferente.
+
+name: Build & Release JPCraft Panel (DISABLED)
 
 on:
-  push:
-    tags:
-      - "v*.*.*"   # Se activa cuando subes un tag como v1.0.0
+  workflow_dispatch:   # Solo se activa manualmente, nunca automático
 
 jobs:
   build:
@@ -17,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
