@@ -5,7 +5,8 @@
 FROM --platform=$TARGETOS/$TARGETARCH node:22-alpine
 WORKDIR /app
 COPY . ./
-RUN yarn install --frozen-lockfile \
+RUN mkdir -p public/assets \
+    && yarn install --frozen-lockfile \
     && yarn run build:production
 
 # Stage 1:

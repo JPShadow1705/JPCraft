@@ -1,0 +1,73 @@
+name: Build & Release JPCraft Panel
+
+on:
+  push:
+    tags:
+      - "v*.*.*"   # Se activa cuando subes un tag como v1.0.0
+
+jobs:
+  build:
+    name: Build and Package Panel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: bcmath, gd, mbstring, mysql, xml, zip, curl
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install Node dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build frontend assets
+        run: |
+          mkdir -p public/assets
+          yarn build:production
+
+      - name: Install Composer dependencies (no dev)
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Create panel.tar.gz
+        run: |
+          tar -czf panel.tar.gz \
+            --exclude=".git" \
+            --exclude="node_modules" \
+            --exclude=".env" \
+            --exclude="storage/logs/*" \
+            --exclude="storage/framework/sessions/*" \
+            --exclude="storage/framework/cache/*" \
+            --exclude="storage/framework/views/*" \
+            --exclude="*.test.*" \
+            --exclude="tests" \
+            .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "JPCraft Panel ${{ github.ref_name }}"
+          body: |
+            ## JPCraft Panel ${{ github.ref_name }}
+
+            Panel de gestión de servidores de juego personalizado, basado en Pterodactyl.
+
+            ### Instalación
+            ```bash
+            bash <(curl -s https://raw.githubusercontent.com/JPShadow1705/jpcraft-installer/master/install.sh)
+            ```
+          files: panel.tar.gz
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
