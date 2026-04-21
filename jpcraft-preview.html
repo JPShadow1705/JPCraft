@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JPCraft — UI Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #070a07;
+    --n900: hsl(150,20%,8%);
+    --n800: hsl(150,16%,13%);
+    --n700: hsl(150,13%,20%);
+    --n600: hsl(150,10%,35%);
+    --n500: hsl(150,8%,43%);
+    --n400: hsl(150,8%,53%);
+    --n300: hsl(150,10%,65%);
+    --n200: hsl(150,12%,82%);
+    --n100: hsl(150,15%,91%);
+    --e300: #6ee7b7;
+    --e400: #34d399;
+    --e500: #10b981;
+    --e600: #059669;
+    --e700: #047857;
+    --e900: #064e3b;
+  }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--black); color: var(--n200); min-height: 100vh; }
+  a { text-decoration: none; }
+
+  /* NAV */
+  .nav { background: var(--n900); border-bottom: 1px solid rgba(16,185,129,0.12); box-shadow: 0 2px 20px rgba(0,0,0,0.5); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 56px; padding: 0 1rem; }
+  .logo { display: flex; align-items: center; gap: 10px; flex: 1; }
+  .logo span { font-weight: 700; font-size: 1.1rem; color: #f9fafb; letter-spacing: -0.01em; }
+  .nav-links { display: flex; height: 100%; align-items: center; }
+  .nav-links a { display: flex; align-items: center; height: 56px; padding: 0 20px; color: var(--n400); font-size: 0.85rem; transition: all 0.15s; position: relative; }
+  .nav-links a:hover, .nav-links a.active { color: #f9fafb; background: var(--black); }
+  .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--e500); }
+  .nav-links .avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--e700); display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; font-weight: 600; }
+
+  /* SECTIONS */
+  .section { padding: 24px; max-width: 1200px; margin: 0 auto; }
+  .section-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--n500); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid rgba(16,185,129,0.1); }
+
+  /* LOGIN CARD */
+  .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--black); padding: 24px; }
+  .login-card { width: 100%; max-width: 440px; background: linear-gradient(160deg, hsl(150,18%,11%) 0%, hsl(150,20%,7%) 100%); border: 1px solid rgba(16,185,129,0.18); border-radius: 16px; padding: 2.5rem 2rem; box-shadow: 0 24px 48px rgba(0,0,0,0.7); }
+  .login-logo-wrap { display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem; gap: 0.75rem; }
+  .brand-name { font-weight: 700; font-size: 1.65rem; color: #f9fafb; letter-spacing: -0.025em; }
+  .brand-name em { color: var(--e500); font-style: normal; }
+  .brand-sub { font-size: 0.82rem; color: var(--n400); margin-top: 4px; }
+  .field { margin-bottom: 1rem; }
+  .field label { display: block; font-size: 0.75rem; font-weight: 500; color: var(--n400); margin-bottom: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .field input { width: 100%; background: var(--n900); border: 1px solid var(--n600); border-radius: 8px; padding: 10px 14px; color: #f9fafb; font-family: inherit; font-size: 0.9rem; transition: border-color 0.15s; }
+  .field input:focus { outline: none; border-color: var(--e600); box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
+  .btn-primary { width: 100%; background: var(--e600); border: 1px solid var(--e700); color: #f0fdf4; border-radius: 8px; padding: 11px; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-top: 1.5rem; letter-spacing: 0.02em; transition: background 0.15s; }
+  .btn-primary:hover { background: var(--e700); }
+  .forgot { text-align: center; margin-top: 1rem; font-size: 0.75rem; color: var(--n500); }
+  .login-copy { text-align: center; color: var(--n600); font-size: 0.72rem; margin-top: 1.25rem; }
+
+  /* SERVER ROW */
+  .server-row { display: flex; align-items: center; background: var(--n800); border: 1px solid transparent; border-radius: 10px; padding: 16px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden; }
+  .server-row:hover { border-color: var(--e700); background: var(--n700); }
+  .status-bar { position: absolute; right: 6px; top: 6px; bottom: 6px; width: 6px; border-radius: 99px; background: var(--e500); opacity: 0.5; }
+  .status-bar.offline { background: #ef4444; }
+  .status-bar.starting { background: #eab308; }
+  .server-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--n700); display: flex; align-items: center; justify-content: center; color: var(--n400); margin-right: 14px; flex-shrink: 0; }
+  .server-name { font-size: 0.95rem; font-weight: 500; color: #f9fafb; }
+  .server-desc { font-size: 0.8rem; color: var(--n400); margin-top: 2px; }
+  .server-stats { display: flex; gap: 24px; margin-left: auto; padding-right: 20px; }
+  .stat { text-align: center; }
+  .stat-val { font-size: 0.85rem; color: var(--n300); font-weight: 500; }
+  .stat-lbl { font-size: 0.65rem; color: var(--n600); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* TITLED BOX */
+  .titled-box { background: var(--n800); border: 1px solid var(--n700); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+  .titled-box-header { background: var(--n900); padding: 10px 14px; border-bottom: 1px solid var(--n700); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--n300); display: flex; align-items: center; gap: 8px; }
+  .titled-box-header .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--e600); }
+  .titled-box-body { padding: 14px; font-size: 0.85rem; color: var(--n300); line-height: 1.6; }
+
+  /* SUB NAV */
+  .sub-nav { background: var(--n900); border-bottom: 1px solid rgba(16,185,129,0.1); }
+  .sub-nav-inner { max-width: 1200px; margin: 0 auto; display: flex; padding: 0 8px; }
+  .sub-nav a { display: inline-block; padding: 12px 16px; font-size: 0.83rem; color: var(--n400); transition: all 0.15s; position: relative; }
+  .sub-nav a:hover { color: #f9fafb; }
+  .sub-nav a.active { color: var(--e400); box-shadow: inset 0 -2px var(--e500); }
+
+  /* TABS */
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .tab { padding: 7px 16px; border-radius: 6px; font-size: 0.8rem; font-weight: 500; cursor: pointer; border: 1px solid var(--n700); color: var(--n400); background: transparent; font-family: inherit; transition: all 0.15s; }
+  .tab.active, .tab:hover { background: var(--n700); color: #f9fafb; border-color: var(--e700); }
+
+  .divider { margin: 24px 0; border: none; border-top: 1px solid rgba(16,185,129,0.08); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .badge-green { background: rgba(16,185,129,0.15); color: var(--e400); }
+  .badge-red { background: rgba(239,68,68,0.15); color: #f87171; }
+  .badge-yellow { background: rgba(234,179,8,0.15); color: #facc15; }
+</style>
+</head>
+<body>
+
+<!-- ==================== SECTION 1: LOGIN PAGE ==================== -->
+<div class="login-wrap" id="login-section">
+  <div style="width:100%;max-width:440px">
+    <div class="login-card">
+      <div class="login-logo-wrap">
+        <!-- JPCraft Cube SVG -->
+        <svg width="56" height="56" viewBox="0 0 48 48" fill="none">
+          <path d="M24 4L42 14V34L24 44L6 34V14L24 4Z" fill="#059669"/>
+          <path d="M24 4L42 14L24 24L6 14L24 4Z" fill="#34d399"/>
+          <path d="M6 14L24 24V44L6 34V14Z" fill="#064e3b"/>
+          <path d="M42 14L24 24V44L42 34V14Z" fill="#059669"/>
+        </svg>
+        <div style="text-align:center">
+          <div class="brand-name">JP<em>Craft</em></div>
+          <div class="brand-sub">Sign in to your account</div>
+        </div>
+      </div>
+      <div class="field"><label>Username or Email</label><input type="text" placeholder="admin@example.com"></div>
+      <div class="field"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="btn-primary">Sign In</button>
+      <div class="forgot">Forgot password?</div>
+    </div>
+    <div class="login-copy">© 2026 <span style="color:hsl(150,8%,50%)">JPCraft</span> — All rights reserved.</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ==================== SECTION 2: DASHBOARD ==================== -->
+<div class="nav">
+  <div class="nav-inner">
+    <div class="logo">
+      <svg width="22" height="22" viewBox="0 0 48 48" fill="none">
+        <path d="M24 4L42 14V34L24 44L6 34V14L24 4Z" fill="#059669"/>
+        <path d="M24 4L42 14L24 24L6 14L24 4Z" fill="#34d399"/>
+        <path d="M6 14L24 24V44L6 34V14Z" fill="#064e3b"/>
+        <path d="M42 14L24 24V44L42 34V14Z" fill="#059669"/>
+      </svg>
+      <span>JPCraft</span>
+    </div>
+    <div class="nav-links">
+      <a href="#" class="active">
+        <svg width="15" height="15" fill="currentColor" viewBox="0 0 16 16" style="margin-right:6px"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm8 0A1.5 1.5 0 0 1 10.5 9h3A1.5 1.5 0 0 1 15 10.5v3A1.5 1.5 0 0 1 13.5 15h-3A1.5 1.5 0 0 1 9 13.5z"/></svg>
+        Dashboard
+      </a>
+      <a href="#">
+        <svg width="15" height="15" fill="currentColor" viewBox="0 0 16 16" style="margin-right:6px"><path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/><path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52z"/></svg>
+        Admin
+      </a>
+      <a href="#">
+        <div class="avatar">JP</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <div class="section-title">My Servers</div>
+
+  <div class="server-row">
+    <div class="server-icon">
+      <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M1 2a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm1 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm0 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/></svg>
+    </div>
+    <div>
+      <div class="server-name">Minecraft Survival <span class="badge badge-green" style="margin-left:8px">Online</span></div>
+      <div class="server-desc">play.jpcraft.net — Vanilla 1.21.4</div>
+    </div>
+    <div class="server-stats">
+      <div class="stat"><div class="stat-val" style="color:var(--e400)">12%</div><div class="stat-lbl">CPU</div></div>
+      <div class="stat"><div class="stat-val">1.2 GB</div><div class="stat-lbl">RAM</div></div>
+      <div class="stat"><div class="stat-val">8.4 GB</div><div class="stat-lbl">Disk</div></div>
+    </div>
+    <div class="status-bar"></div>
+  </div>
+
+  <div class="server-row">
+    <div class="server-icon">
+      <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M1 2a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm1 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm0 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/></svg>
+    </div>
+    <div>
+      <div class="server-name">Terraria Server <span class="badge badge-red" style="margin-left:8px">Offline</span></div>
+      <div class="server-desc">terraria.jpcraft.net — tModLoader</div>
+    </div>
+    <div class="server-stats">
+      <div class="stat"><div class="stat-val" style="color:var(--n600)">— %</div><div class="stat-lbl">CPU</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--n600)">— GB</div><div class="stat-lbl">RAM</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--n600)">2.1 GB</div><div class="stat-lbl">Disk</div></div>
+    </div>
+    <div class="status-bar offline"></div>
+  </div>
+
+  <div class="server-row">
+    <div class="server-icon">
+      <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M1 2a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm1 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm0 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/></svg>
+    </div>
+    <div>
+      <div class="server-name">CS2 Competitive <span class="badge badge-yellow" style="margin-left:8px">Starting</span></div>
+      <div class="server-desc">cs.jpcraft.net — CS2 Dedicated</div>
+    </div>
+    <div class="server-stats">
+      <div class="stat"><div class="stat-val" style="color:var(--e300)">67%</div><div class="stat-lbl">CPU</div></div>
+      <div class="stat"><div class="stat-val">3.8 GB</div><div class="stat-lbl">RAM</div></div>
+      <div class="stat"><div class="stat-val">15 GB</div><div class="stat-lbl">Disk</div></div>
+    </div>
+    <div class="status-bar starting"></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ==================== SECTION 3: SERVER VIEW ==================== -->
+<div class="sub-nav">
+  <div class="sub-nav-inner">
+    <a href="#" class="active">Console</a>
+    <a href="#">Files</a>
+    <a href="#">Databases</a>
+    <a href="#">Schedules</a>
+    <a href="#">Users</a>
+    <a href="#">Backups</a>
+    <a href="#">Network</a>
+    <a href="#">Startup</a>
+    <a href="#">Settings</a>
+  </div>
+</div>
+
+<div class="section" style="margin-top:20px; display:grid; grid-template-columns:1fr 320px; gap:16px">
+  <div class="titled-box">
+    <div class="titled-box-header"><span class="dot"></span> Server Console</div>
+    <div class="titled-box-body" style="font-family:monospace; background:var(--n900); padding:14px; height:180px; overflow-y:auto; font-size:0.8rem; line-height:1.8">
+      <div style="color:var(--e400)">[INFO] Server starting on port 25565...</div>
+      <div style="color:var(--n400)">[INFO] Loading world "world"</div>
+      <div style="color:var(--n400)">[INFO] Preparing spawn area: 83%</div>
+      <div style="color:var(--e400)">[INFO] Done (3.241s)! For help, type "help"</div>
+      <div style="color:var(--n300)">[INFO] Player JPablo joined the game</div>
+      <div style="color:#f9fafb; margin-top:8px">█</div>
+    </div>
+    <div style="padding:10px 14px; border-top:1px solid var(--n700); display:flex; gap:8px">
+      <input type="text" placeholder="Type a command..." style="flex:1; background:var(--n900); border:1px solid var(--n600); border-radius:6px; padding:8px 12px; color:#f9fafb; font-family:monospace; font-size:0.83rem">
+      <button style="background:var(--e600); border:none; border-radius:6px; padding:8px 16px; color:#f0fdf4; font-family:inherit; font-size:0.83rem; font-weight:600; cursor:pointer">Send</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="titled-box">
+      <div class="titled-box-header"><span class="dot"></span> Resource Usage</div>
+      <div class="titled-box-body">
+        <div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:0.75rem;color:var(--n400)">CPU</span><span style="font-size:0.75rem;color:var(--e400)">12%</span></div>
+          <div style="height:6px;background:var(--n700);border-radius:99px"><div style="width:12%;height:100%;background:var(--e500);border-radius:99px"></div></div>
+        </div>
+        <div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:0.75rem;color:var(--n400)">Memory</span><span style="font-size:0.75rem;color:var(--n300)">1.2 / 4 GB</span></div>
+          <div style="height:6px;background:var(--n700);border-radius:99px"><div style="width:30%;height:100%;background:var(--e600);border-radius:99px"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:0.75rem;color:var(--n400)">Disk</span><span style="font-size:0.75rem;color:var(--n300)">8.4 / 20 GB</span></div>
+          <div style="height:6px;background:var(--n700);border-radius:99px"><div style="width:42%;height:100%;background:var(--e700);border-radius:99px"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="titled-box">
+      <div class="titled-box-header"><span class="dot"></span> Server Info</div>
+      <div class="titled-box-body" style="font-size:0.8rem">
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--n700)"><span style="color:var(--n400)">Status</span><span class="badge badge-green">Running</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--n700)"><span style="color:var(--n400)">IP</span><span>play.jpcraft.net:25565</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0"><span style="color:var(--n400)">Uptime</span><span style="color:var(--e400)">3h 42m</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:0">
+      <button style="background:var(--e600);border:1px solid var(--e700);border-radius:8px;padding:9px;color:#f0fdf4;font-family:inherit;font-size:0.8rem;font-weight:600;cursor:pointer">Restart</button>
+      <button style="background:transparent;border:1px solid #dc2626;border-radius:8px;padding:9px;color:#f87171;font-family:inherit;font-size:0.8rem;font-weight:600;cursor:pointer">Stop</button>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;padding:20px 0 28px;color:hsl(150,8%,35%);font-size:0.72rem">
+  © 2026 JPCraft — All rights reserved.
+</div>
+
+</body>
+</html>
