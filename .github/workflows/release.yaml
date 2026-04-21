@@ -20,17 +20,17 @@ jobs:
       - run: yarn build:production
       - name: create release archive
         run: |
-          tar -czf panel.tar.gz \
-            --exclude='.git' \
-            --exclude='panel.tar.gz' \
-            --exclude='node_modules' \
-            --exclude='.env' \
-            --exclude='storage/logs/*' \
-            --exclude='storage/framework/sessions/*' \
-            --exclude='storage/framework/cache/*' \
-            --exclude='storage/framework/views/*' \
-            --exclude='tests' \
+          tar -czf /tmp/panel.tar.gz \
+            --exclude='./.git' \
+            --exclude='./node_modules' \
+            --exclude='./.env' \
+            --exclude='./storage/logs/*' \
+            --exclude='./storage/framework/sessions/*' \
+            --exclude='./storage/framework/cache/*' \
+            --exclude='./storage/framework/views/*' \
+            --exclude='./tests' \
             .
+          mv /tmp/panel.tar.gz ./panel.tar.gz
       - name: write changelog
         run: |
           sed -n "/^## ${{ github.ref_name }}/,/^## /{/^## /b;p}" CHANGELOG.md > ./RELEASE_CHANGELOG || echo 'JPCraft Panel Release ${{ github.ref_name }}' > ./RELEASE_CHANGELOG
